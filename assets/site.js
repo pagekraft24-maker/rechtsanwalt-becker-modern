@@ -70,3 +70,18 @@
     });
   }
 })();
+(function () {
+  // Scroll-Fortschritt + Header-Schatten auf allen Seiten
+  var bar = document.querySelector('[data-progress]');
+  var header = document.querySelector('[data-header]');
+  var ticking = false;
+  function update() {
+    var h = document.documentElement.scrollHeight - window.innerHeight;
+    var p = h > 0 ? Math.min(1, window.scrollY / h) : 0;
+    if (bar) bar.style.transform = 'scaleX(' + p + ')';
+    if (header) header.classList.toggle('is-scrolled', window.scrollY > 10);
+    ticking = false;
+  }
+  window.addEventListener('scroll', function () { if (!ticking) { ticking = true; requestAnimationFrame(update); } }, { passive: true });
+  update();
+})();

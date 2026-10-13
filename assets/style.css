@@ -67,17 +67,22 @@ strong{color:var(--ink);font-weight:600}
 .mobile-menu .btn{margin-top:1rem;align-self:flex-start}
 @media(min-width:900px){.mobile-menu{display:none!important}}
 
-/* Startseite Hero */
-.home-hero{position:relative;min-height:min(92vh,820px);display:flex;align-items:flex-end;overflow:hidden;background:var(--navy-900)}
-.home-hero-media,.home-hero-media img{position:absolute;inset:0;width:100%;height:100%}
-.home-hero-media img{object-fit:cover;object-position:50% 20%;transform:scale(1.04);animation:heroZoom 14s var(--ease) forwards}
-@keyframes heroZoom{to{transform:scale(1)}}
-.home-hero-shade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(7,29,53,.55) 0%,rgba(7,29,53,.1) 30%,rgba(7,29,53,.35) 60%,rgba(7,29,53,.92) 100%)}
-.home-hero-content{position:relative;z-index:1;padding-top:8rem;padding-bottom:3.5rem}
-@media(min-width:768px){.home-hero-content{padding-bottom:5rem}}
-.home-hero h1{color:#fff;font-size:clamp(2.5rem,7vw,5.25rem);font-weight:500;line-height:1.02;letter-spacing:-.025em;max-width:14ch}
-.creds{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:2rem}
-.creds li{color:#fff;font:500 .9375rem/1 var(--sans);padding:.75rem 1.1rem;border-radius:999px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.28);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+/* Startseite Hero – Bild vollständig sichtbar, kein Beschnitt */
+.home-hero{position:relative;background:var(--navy-900);overflow:hidden}
+.home-hero-media{display:block;position:relative;width:100%;aspect-ratio:1000/609;overflow:hidden}
+.home-hero-media img{display:block;width:100%;height:100%;object-fit:contain;animation:heroFade 1.4s var(--ease) both}
+@keyframes heroFade{from{opacity:0;filter:saturate(.6)}to{opacity:1;filter:none}}
+.home-hero-shade{display:none}
+.home-hero-content{position:relative;padding-top:2.25rem;padding-bottom:2.75rem}
+.home-hero h1{color:#fff;font-size:clamp(2.25rem,7vw,5.25rem);font-weight:500;line-height:1.02;letter-spacing:-.025em;max-width:14ch}
+.creds{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:1.5rem}
+.creds li{color:#fff;font:500 .9375rem/1 var(--sans);padding:.75rem 1.1rem;border-radius:999px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.28);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);transition:background-color .35s var(--ease),border-color .35s var(--ease),transform .35s var(--ease),color .35s}
+.creds li:hover{background:var(--gold-400);border-color:var(--gold-400);color:var(--navy-900);transform:translateY(-2px)}
+@media(min-width:900px){
+  .home-hero-shade{display:block;position:absolute;left:0;right:0;bottom:0;height:62%;background:linear-gradient(180deg,rgba(7,29,53,0) 0%,rgba(7,29,53,.55) 45%,rgba(7,29,53,.9) 100%);pointer-events:none}
+  .home-hero-content{position:absolute;left:0;right:0;bottom:0;margin:0 auto;padding-bottom:4.5rem}
+  .creds{margin-top:2rem}
+}
 
 /* Sektionen */
 .section{padding:4.5rem 0}
@@ -244,3 +249,105 @@ strong{color:var(--ink);font-weight:600}
 h1,h2,h3{hyphens:manual}
 @media(max-width:480px){.cost-card,.mini-card,.service-card,.contact-card,.callout{padding:1.6rem}.contact-form{padding:1.5rem}.cost-card h2{font-size:1.375rem}}
 .list-label{font-weight:600;color:var(--ink);margin-bottom:1.25rem}
+
+/* ================= Effekte & Hover ================= */
+/* Scroll-Fortschritt */
+.scroll-progress{position:absolute;left:0;right:0;bottom:-1px;height:2px;pointer-events:none}
+.scroll-progress span{display:block;height:100%;width:100%;transform-origin:left;transform:scaleX(0);background:linear-gradient(90deg,var(--gold-500),var(--gold-400))}
+.site-header.is-scrolled{box-shadow:0 8px 24px -16px rgba(7,29,53,.35)}
+
+/* Buttons: Glanz-Effekt */
+.btn{position:relative;overflow:hidden;isolation:isolate}
+.btn::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(110deg,transparent 25%,rgba(255,255,255,.28) 50%,transparent 75%);transform:translateX(-120%);transition:transform .7s var(--ease)}
+.btn:hover::after{transform:translateX(120%)}
+.btn:hover{box-shadow:0 12px 24px -10px rgba(2,70,139,.55)}
+.btn:active{transform:translateY(0) scale(.98)}
+.btn i{transition:transform .35s var(--ease)}
+.btn:hover i{transform:translateX(3px)}
+
+/* Logo */
+.brand svg{transition:transform .45s var(--ease)}
+.brand:hover svg{transform:rotate(-4deg) scale(1.06)}
+
+/* Mobile-Links */
+.m-link{transition:color .25s,padding-left .35s var(--ease)}
+.m-link:hover,.m-link[aria-current=page]{color:var(--navy-600);padding-left:.5rem}
+
+/* Profilfoto */
+.photo-frame{overflow:visible}
+.photo-frame picture{overflow:hidden;border-radius:var(--radius);box-shadow:var(--shadow-lg)}
+.photo-frame img{box-shadow:none;transition:transform 1s var(--ease)}
+.photo-frame::before{transition:transform .6s var(--ease),border-color .6s}
+.profile-photo:hover .photo-frame img{transform:scale(1.05)}
+.profile-photo:hover .photo-frame::before{transform:translate(20px,20px);border-color:var(--gold-500)}
+
+/* Leistungs-Karten */
+.service-card{overflow:hidden}
+.service-card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:linear-gradient(180deg,var(--gold-400),var(--gold-500));transform:scaleY(0);transform-origin:top;transition:transform .5s var(--ease)}
+.service-card:hover::before{transform:scaleY(1)}
+.service-card h2{transition:color .35s}
+.service-card:hover h2{color:var(--navy-600)}
+.icon-badge{transition:background-color .4s var(--ease),color .4s var(--ease),transform .5s var(--ease)}
+.service-card:hover .icon-badge,.mini-card:hover .icon-badge,.cost-card:hover .icon-badge,.topic:hover .icon-badge{background:var(--navy-600);color:#fff;transform:rotate(-6deg) scale(1.06)}
+.cost-card:first-child:hover .icon-badge{background:var(--gold-400);color:var(--navy-900)}
+.service-num{transition:color .35s,transform .45s var(--ease)}
+.service-card:hover .service-num{color:var(--navy-600);transform:translateY(-2px)}
+
+/* Mini-, Kosten- und Unterlagen-Karten */
+.mini-card,.cost-card,.doc-item{transition:transform .45s var(--ease),box-shadow .45s var(--ease),border-color .45s}
+.mini-card:hover,.cost-card:hover,.doc-item:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg);border-color:var(--gold-400)}
+.doc-num,.step-num{transition:color .35s,transform .45s var(--ease)}
+.doc-item:hover .doc-num{color:var(--navy-600);transform:scale(1.12)}
+
+/* Schritte */
+.step{position:relative;transition:padding-left .45s var(--ease)}
+.step::before{content:"";position:absolute;left:0;top:-1px;height:1px;width:100%;background:var(--navy-600);transform:scaleX(0);transform-origin:left;transition:transform .6s var(--ease)}
+.step:hover{padding-left:.75rem}
+.step:hover::before{transform:scaleX(1)}
+.step:hover .step-num{color:var(--navy-600)}
+
+/* Themen (Verkehrsrecht) */
+.topic{position:relative;border-radius:var(--radius-sm);transition:background-color .35s,padding .45s var(--ease)}
+.topic:hover{background:#fff;padding-left:1rem;padding-right:1rem;box-shadow:var(--shadow)}
+
+/* Checkliste */
+.check-list li{transition:transform .35s var(--ease),color .3s}
+.check-list li:hover{transform:translateX(4px);color:var(--navy-600)}
+.check-list i{transition:background-color .35s,transform .45s var(--ease)}
+.check-list li:hover i{background:var(--gold-500);transform:scale(1.12)}
+
+/* Hinweise */
+.note,.callout{transition:transform .45s var(--ease),box-shadow .45s var(--ease)}
+.note:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg)}
+.note-warn:hover{box-shadow:none}
+
+/* Kontakt */
+.contact-list li{transition:transform .35s var(--ease)}
+.contact-list li:hover{transform:translateX(4px)}
+.contact-list i{transition:transform .45s var(--ease)}
+.contact-list li:hover i{transform:scale(1.18)}
+.field input:hover,.field textarea:hover{border-color:var(--gold-400)}
+
+/* Footer-Links mit Unterstrich-Animation */
+.footer-links a{position:relative}
+.footer-links a::after{content:"";position:absolute;left:0;right:0;bottom:-3px;height:1px;background:var(--gold-400);transform:scaleX(0);transform-origin:left;transition:transform .35s var(--ease)}
+.footer-links a:hover::after{transform:scaleX(1)}
+
+/* Seiten-Hero: sanft schwebender Lichtpunkt */
+.page-hero::before{animation:glow 12s ease-in-out infinite alternate}
+@keyframes glow{from{transform:translate(0,0) scale(1)}to{transform:translate(-6%,8%) scale(1.12)}}
+.page-hero h1{animation:riseIn 1s var(--ease) both}
+.page-hero .eyebrow{animation:riseIn 1s var(--ease) both}
+.page-hero-intro{animation:riseIn 1s .15s var(--ease) both}
+@keyframes riseIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+
+/* Gestaffeltes Einblenden in Rastern */
+.js .service-grid .reveal:nth-child(2),.js .mini-grid .reveal:nth-child(2),.js .cost-grid .reveal:nth-child(2),.js .doc-list .reveal:nth-child(3n+2),.js .topic-grid .reveal:nth-child(2n){transition-delay:.1s}
+.js .mini-grid .reveal:nth-child(3),.js .cost-grid .reveal:nth-child(3),.js .doc-list .reveal:nth-child(3n){transition-delay:.2s}
+
+@media (hover:none){
+  .step:hover,.topic:hover{padding-left:0;padding-right:0;background:transparent;box-shadow:none}
+}
+@media (prefers-reduced-motion:reduce){
+  .page-hero::before,.page-hero h1,.page-hero .eyebrow,.page-hero-intro,.home-hero-media img{animation:none!important}
+}
